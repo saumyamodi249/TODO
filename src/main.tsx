@@ -1,6 +1,6 @@
 import { StrictMode, useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
-import { ConfigProvider, theme as antdTheme } from "antd";
+import { App as AntdApp, ConfigProvider, theme as antdTheme } from "antd";
 import App from "./App.tsx";
 import "./index.css";
 
@@ -87,7 +87,9 @@ export function Root() {
         },
       }}
     >
-      <App />
+      <AntdApp>
+        <App />
+      </AntdApp>
     </ConfigProvider>
   );
 }
