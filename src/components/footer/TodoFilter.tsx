@@ -1,23 +1,19 @@
-
 import { Segmented } from "antd";
-import {
-  useTodoStore,
-  type TodoFilter as TodoFilterValue,
-} from "@/state/useTodoStore";
+import { useTasks } from "@/context/TaskContext";
+import type { TaskFilter as TaskFilterValue } from "@/types/task";
 
-const options: { label: string; value: TodoFilterValue }[] = [
+const options: { label: string; value: TaskFilterValue }[] = [
   { label: "All", value: "all" },
   { label: "Active", value: "active" },
   { label: "Completed", value: "completed" },
 ];
 
 const TodoFilter = () => {
-  const filter = useTodoStore((state) => state.filter);
-  const setFilter = useTodoStore((state) => state.setFilter);
+  const { filter, setFilter } = useTasks();
 
   return (
     <Segmented
-      aria-label="Filter todos"
+      aria-label="Filter tasks"
       options={options}
       value={filter}
       onChange={(value) => {

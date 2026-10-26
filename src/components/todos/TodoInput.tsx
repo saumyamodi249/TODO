@@ -1,11 +1,19 @@
 import { useState } from "react";
-import { Input } from "antd";
+import { Input, Spin } from "antd";
 import { CornerDownLeft, Plus } from "lucide-react";
-import { useTodoStore } from "@/state/useTodoStore";
+import { useTasks } from "@/context/TaskContext";
 
-const EnterSuffix = () => {
+const EnterSuffix = ({ isCreating }: { isCreating: boolean }) => {
+  if (isCreating) {
+    return (
+      <div className="flex items-center px-2 py-1">
+        <Spin size="small" />
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-background-secondary text-font-secondary rounded px-2 py-1 flex items-end gap-1 text-xs">
+    <div className="bg-background-secondary text-font-secondary rounded px-2 py-1 flex items-end gap-1 text-xs select-none">
       <CornerDownLeft className="size-3" />
       Enter
     </div>
@@ -14,23 +22,26 @@ const EnterSuffix = () => {
 
 const TodoInput = () => {
   const [title, setTitle] = useState("");
-  const addTodo = useTodoStore((state) => state.addTodo);
+  const { createTask, isCreating } = useTasks();
 
-  const handlePressEnter = () => {
-    if (!title.trim()) return;
+  const handlePressEnter = async () => {
+    if (!title.trim() || isCreating) return;
 
-    addTodo(title);
-    setTitle("");
+    const success = await createTask(title);
+    if (success) {
+      setTitle("");
+    }
   };
 
   return (
     <div>
       <Input
         prefix={<Plus strokeWidth={1} />}
-        suffix={<EnterSuffix />}
+        suffix={<EnterSuffix isCreating={isCreating} />}
         size="large"
         placeholder="What needs to be done?"
         value={title}
+        disabled={isCreating}
         onChange={(event) => setTitle(event.target.value)}
         onPressEnter={handlePressEnter}
       />

@@ -1,17 +1,15 @@
 import { Button, Popconfirm } from "antd";
-import { useTodoStore } from "@/state/useTodoStore";
+import { useTasks } from "@/context/TaskContext";
 
 const ClearCompletedTodos = () => {
-  const completedCount = useTodoStore(
-    (state) => state.todos.filter((todo) => todo.completed).length,
-  );
-  const clearCompleted = useTodoStore((state) => state.clearCompleted);
+  const { tasks, clearCompleted } = useTasks();
+  const completedCount = tasks.filter((task) => task.isCompleted).length;
 
   return (
     <Popconfirm
-      title="Clear completed todos?"
+      title="Clear completed tasks?"
       description={`This will remove ${completedCount} completed ${
-        completedCount === 1 ? "todo" : "todos"
+        completedCount === 1 ? "task" : "tasks"
       }.`}
       onConfirm={clearCompleted}
       okText="Clear"
