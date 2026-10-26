@@ -11,4 +11,13 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  server: {
+    proxy: {
+      "/tasks": {
+        target: "https://nestjs-learn-wbkf.onrender.com",
+        changeOrigin: true,
+        secure: true,
+      },
+    },
+  },
 });
